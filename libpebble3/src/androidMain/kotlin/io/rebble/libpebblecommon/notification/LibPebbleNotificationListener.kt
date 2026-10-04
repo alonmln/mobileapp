@@ -197,9 +197,10 @@ class LibPebbleNotificationListener : NotificationListenerService(), LibPebbleKo
     ) {
         connection.onShadeChanged()
 
+        // Dialers re-post the incoming call notification under the same key without CATEGORY_CALL once answered.
+        notificationCallDetector.handleCallNotificationRemoved(sbn)
         if (sbn.notification.category == Notification.CATEGORY_CALL) {
             callDoNotDisturbFilter.clearCallNotification(sbn)
-            notificationCallDetector.handleCallNotificationRemoved(sbn)
             return
         }
         notificationHandler.handleNotificationRemoved(sbn)
